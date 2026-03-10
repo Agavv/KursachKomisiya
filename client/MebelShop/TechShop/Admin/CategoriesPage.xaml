@@ -1,0 +1,84 @@
+﻿<Page x:Class="MebelShop.Admin.CategoriesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d"
+      Background="{DynamicResource MaterialDesignPaper}"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      Title="Категории">
+    <materialDesign:DialogHost x:Name="CategoryDialogHost">
+
+        <Grid Margin="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10" VerticalAlignment="Center">
+                <TextBox x:Name="SearchTextBox"
+                            Width="200"
+                            Margin="0,0,10,0"
+                            materialDesign:HintAssist.Hint="Поиск по ID или названию категории"
+                            TextChanged="SearchTextBox_TextChanged"/>
+                <Button Content="Сбросить"
+                        Click="Reset_Click"/>
+            </StackPanel>
+
+            <!-- Заголовок и кнопки -->
+            <Button Content="Добавить категорию"
+                        Click="AddCategory_Click"
+                        Grid.Row="2"
+                        HorizontalAlignment="Center"/>
+
+            <!-- Таблица категорий -->
+            <DataGrid x:Name="CategoriesDataGrid"
+                      Grid.Row="1"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      CanUserAddRows="False"
+                      Margin="0"
+                      RowHeight="35"
+                      SelectionMode="Single"
+                      materialDesign:DataGridAssist.CellPadding="8,4"
+                      materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                      MouseDoubleClick="CategoriesDataGrid_MouseDoubleClick">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding IdCategory}" Width="60" />
+                    <DataGridTextColumn Header="Название категории" Binding="{Binding NameCategory}" Width="*" />
+                    <DataGridTextColumn Header="Характеристик" Binding="{Binding CharacteristicsCount}" Width="120" />
+                    <DataGridTextColumn Header="Товаров" Binding="{Binding ProductsCount}" Width="120" />
+                </DataGrid.Columns>
+
+                <DataGrid.ContextMenu>
+                    <ContextMenu x:Name="CategoryContextMenu">
+                        <MenuItem Header="Изменить категорию" Click="EditCategory_Click"/>
+                        <MenuItem Header="Удалить категорию" Click="DeleteCategory_Click"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+            </DataGrid>
+        </Grid>
+
+        <materialDesign:DialogHost.DialogContent>
+            <StackPanel Margin="20">
+                <TextBlock Text="{Binding DialogTitle}" FontSize="18" Margin="0,0,0,10"/>
+                <TextBox x:Name="CategoryNameTextBox"
+                         materialDesign:HintAssist.Hint="Название категории"
+                         Margin="0,0,0,15"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Content="Отмена" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Margin="0, 0, 5, 0"/>
+                    <Button Grid.Column="1" Content="Сохранить" Click="DialogSave_Click"
+                            Style="{StaticResource MaterialDesignRaisedButton}"/>
+                </Grid>
+            </StackPanel>
+        </materialDesign:DialogHost.DialogContent>
+    </materialDesign:DialogHost>
+</Page>

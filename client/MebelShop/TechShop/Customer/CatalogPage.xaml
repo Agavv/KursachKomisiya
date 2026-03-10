@@ -1,0 +1,106 @@
+﻿<Page x:Class="MebelShop.Customer.CatalogPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      Background="{DynamicResource MaterialDesignPaper}"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      Title="Каталог">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="FilterColumn" Width="0"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Width="250" VerticalAlignment="Stretch" Padding="10" BorderThickness="0,0,1,0" BorderBrush="Orange">
+            <StackPanel x:Name="FiltersPanel">
+                <TextBlock Text="Фильтры" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                <TextBlock Text="Категория:" FontWeight="Bold" Margin="0,5"/>
+                <ComboBox x:Name="CategoryComboBox" SelectionChanged="CategoryComboBox_SelectionChanged" materialDesign:HintAssist.Hint="Выберите категорию"/>
+
+                <StackPanel x:Name="CharacteristicsPanel" Margin="0,10,0,0"/>
+
+                <Button Content="Применить" Margin="0,20,0,0" Height="35" Click="ApplyFilters_Click"/>
+                <Button Content="Сбросить фильтры" Margin="0,5,0,0" Height="35" Click="ResetFilters_Click"/>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Column="1" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Панель поиска/сортировки -->
+                <RowDefinition Height="*"/>
+                <!-- Список товаров -->
+                <RowDefinition Height="Auto"/>
+                <!-- Кнопка "Загрузить ещё" -->
+            </Grid.RowDefinitions>
+
+            <!-- Верхняя панель поиска -->
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,0,10" >
+                <Button x:Name="ToggleFilterButton" Content="☰ Фильтры" Width="120" Margin="0,0,10,0"
+                Click="ToggleFilterButton_Click"/>
+
+                <TextBox x:Name="SearchTextBox" Width="300"
+                 materialDesign:HintAssist.Hint="Поиск по товарам"
+                 TextChanged="SearchTextBox_TextChanged"/>
+
+                <Button Content="Поиск" Margin="10,0,0,0" Width="100" Height="30" Click="SearchButton_Click"/>
+
+                <ComboBox x:Name="SortComboBox" Width="200" Margin="20,0,0,0"
+                  materialDesign:HintAssist.Hint="Сортировка"
+                  SelectionChanged="SortComboBox_SelectionChanged"
+                  SelectedIndex="0">
+                    <ComboBoxItem Content="По умолчанию"/>
+                    <ComboBoxItem Content="Сначала дешёвые"/>
+                    <ComboBoxItem Content="Сначала дорогие"/>
+                    <ComboBoxItem Content="Сначала с высоким рейтингом"/>
+                    <ComboBoxItem Content="Сначала популярные"/>
+                </ComboBox>
+            </StackPanel>
+
+            <!-- Список товаров -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Center">
+                <ItemsControl x:Name="ProductsItemsControl">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel IsItemsHost="True" Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Width="200" Margin="10" BorderThickness="1" BorderBrush="Orange" 
+                            MouseLeftButtonUp="Card_MouseLeftButtonUp" Cursor="Hand">
+                                <StackPanel>
+                                    <Grid Background="White" Margin="5, 5, 5, 0">
+                                        <Image Source="{Binding MainImageUrl}" Height="150"
+                                       RenderOptions.BitmapScalingMode="HighQuality"
+                                       SnapsToDevicePixels="True"/>
+                                    </Grid>
+                                    <TextBlock Text="{Binding ProductName}" FontWeight="Bold" Margin="5,5,5,0"/>
+                                    <TextBlock Text="{Binding Price, StringFormat='Цена: {0} ₽'}" Margin="5,0,5,0"/>
+                                    <TextBlock Text="{Binding AverageRating, StringFormat='Рейтинг: {0}'}" Margin="5,0,5,0"/>
+                                    <TextBlock Text="{Binding ReviewsCount, StringFormat='Отзывы: {0}'}" Margin="5,0,5,5"/>
+                                    <Button Content="{Binding CartButtonText}"
+                                    Margin="5"
+                                    Height="30"
+                                    Click="CartButton_Click"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <!-- Кнопка "Загрузить ещё" -->
+            <Button x:Name="LoadMoreButton" 
+            Grid.Row="2"
+            HorizontalAlignment="Center" 
+            Margin="0,10,0,10"
+            Padding="20,5"
+            Content="Загрузить ещё"
+            Click="LoadMoreButton_Click"/>
+        </Grid>
+    </Grid>
+</Page>

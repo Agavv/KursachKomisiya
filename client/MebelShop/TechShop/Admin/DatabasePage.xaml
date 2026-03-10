@@ -1,0 +1,59 @@
+﻿<Page x:Class="MebelShop.Admin.DatabasePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      Background="{DynamicResource MaterialDesignPaper}"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Margin="0 0 0 15">
+            <TextBlock Text="Управление базой данных"
+                       FontSize="22"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"/>
+
+            <Button Content="Создать резервную копию"
+                    Margin="20 0 0 0"
+                    Click="CreateBackup_Click" />
+        </StackPanel>
+
+        <DataGrid x:Name="BackupGrid"
+                  Grid.Row="1"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  CanUserAddRows="False"
+                  ItemsSource="{Binding}"
+                  SelectionMode="Single">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Имя файла" Binding="{Binding FileName}" Width="*"/>
+                <DataGridTextColumn Header="Дата создания" Binding="{Binding CreatedAt}" Width="200" />
+                <DataGridTextColumn Header="Размер (МБ)" Binding="{Binding SizeMB, StringFormat=F2}" Width="120"/>
+
+                <DataGridTemplateColumn MinWidth="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Удалить"
+                                    Click="DeleteBackup_Click"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn MinWidth="250">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Восстановить из копии"
+                                    Click="RestoreBackup_Click"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page>

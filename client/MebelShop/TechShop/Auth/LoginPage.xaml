@@ -1,0 +1,42 @@
+﻿<Page x:Class="MebelShop.Auth.LoginPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      Title="Вход">
+    <Border Width="400" Padding="30" CornerRadius="10">
+        <StackPanel>
+            <TextBlock Text="Авторизация" FontSize="32" FontWeight="Bold"
+                       HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+            <TextBox x:Name="EmailTextBox"
+                     materialDesign:HintAssist.Hint="Введите логин (email)"
+                     Margin="0,0,0,15"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="admin@gmail.com"/>
+
+            <PasswordBox x:Name="PasswordBox"
+                         materialDesign:HintAssist.Hint="Введите пароль"
+                         Margin="0,0,0,15"
+                         Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
+                         Password="RootPassword321"/>
+
+            <Button Content="Войти"
+                    Margin="0,10,0,5"
+                    Height="40"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Click="LoginButton_Click"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                <Button Content="Нет аккаунта?"
+                        Style="{StaticResource MaterialDesignFlatButton}"
+                        Margin="0,0,10,0"
+                        Click="Register_Click"/>
+                <Button Content="Забыли пароль?"
+                        Style="{StaticResource MaterialDesignFlatButton}"
+                        Click="ForgotPassword_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Page>

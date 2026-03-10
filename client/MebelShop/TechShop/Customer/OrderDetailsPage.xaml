@@ -1,0 +1,65 @@
+﻿<Page x:Class="MebelShop.Customer.OrderDetailsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      Background="{DynamicResource MaterialDesignPaper}"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="20">
+            <TextBlock x:Name="OrderHeaderTextBlock" Text="Детали заказа" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
+
+            <ItemsControl x:Name="OrderItemsControl">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Gray" BorderThickness="1" Padding="10" Margin="0,0,0,10" MouseLeftButtonUp="Border_MouseLeftButtonUp" Cursor="Hand">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Grid.Column="0" Source="{Binding MainImageUrl}" Width="60" Height="60" Margin="0,0,8,0" Stretch="UniformToFill"/>
+                                <TextBlock Grid.Column="1" Text="{Binding ProductName}" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                                <TextBlock Grid.Column="2" Text="{Binding Price, StringFormat='{}{0:N2} ₽'}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Column="3" Text="{Binding Quantity, StringFormat='×{0}'}" 
+                                           Margin="5, 0"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <TextBlock Grid.Column="4" Text="{Binding TotalPrice, StringFormat='{}{0:N2} ₽'}" 
+                                           VerticalAlignment="Center" 
+                                           HorizontalAlignment="Right"
+                                           FontWeight="Bold"
+                                           Foreground="Orange">
+                                    <TextBlock.ToolTip>
+                                        <TextBlock>
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="Цена за шт.: ₽{0:N2} — Кол-во: {1}">
+                                                    <Binding Path="Price"/>
+                                                    <Binding Path="Quantity"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </TextBlock.ToolTip>
+                                </TextBlock>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <TextBlock x:Name="TotalPriceTextBlock" FontSize="16" FontWeight="Bold" Foreground="Orange" Margin="0,10,0,10"/>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Content="← Назад" HorizontalAlignment="Left" MinWidth="150" Style="{StaticResource MaterialDesignRaisedButton}" Margin="0,0,10,0" Click="BackButton_Click"/>
+                <Button Grid.Column="1" HorizontalAlignment="Right" MinWidth="150" Content="Повторить заказ" Style="{StaticResource MaterialDesignRaisedButton}" Click="RepeatOrder_Click"/>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

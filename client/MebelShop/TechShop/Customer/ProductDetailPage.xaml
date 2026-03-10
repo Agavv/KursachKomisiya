@@ -1,0 +1,138 @@
+﻿<Page x:Class="MebelShop.Customer.ProductDetailPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      Background="{DynamicResource MaterialDesignPaper}"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      Title="Детали товара">
+
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Page.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MaxWidth="500"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer Grid.Row="0" Grid.Column="0" VerticalScrollBarVisibility="Auto" Height="400">
+                <ItemsControl x:Name="ImagesListBox" ItemsSource="{Binding ImageUrls}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="5">
+                                <Image Stretch="UniformToFill" Source="{Binding}" Width="400" Height="400" 
+                                       RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True"
+                                       MouseLeftButtonUp="Image_MouseLeftButtonUp" Cursor="Hand"/>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <StackPanel Grid.Row="0" Grid.Column="1" Margin="20,0,0,0">
+                <TextBlock x:Name="ProductNameText" FontSize="24" FontWeight="Bold" TextWrapping="Wrap"/>
+                <TextBlock x:Name="PriceText" FontSize="20" FontWeight="SemiBold" Foreground="Orange" Margin="0,5,0,0"/>
+                <TextBlock x:Name="DescriptionText" TextWrapping="Wrap" Margin="0,10,0,0"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,20,0,0">
+                <TextBlock Text="Характеристики" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+                <ItemsControl x:Name="CharacteristicsItemsControl">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold" Width="200"/>
+                                <TextBlock Text="{Binding Value}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Margin="20,30,0,0">
+                <TextBlock Text="Отзывы" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <TextBlock x:Name="AverageRatingText" FontSize="16" FontWeight="SemiBold" Foreground="Orange"/>
+                    <TextBlock Text=" | " Margin="5,0" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="ReviewsCountText" FontSize="16" Foreground="Gray"/>
+                </StackPanel>
+
+                <StackPanel x:Name="AddReviewPanel" Margin="0,0,0,15" Visibility="Collapsed">
+                    <TextBox x:Name="ReviewTextBox" Height="60" TextWrapping="Wrap" AcceptsReturn="True"
+                             materialDesign:HintAssist.Hint="Ваш отзыв"/>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,10,0,0">
+                        <TextBlock Text="Оценка:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <Slider x:Name="RatingSlider" Minimum="1" Maximum="5" Value="5" Width="150" TickFrequency="1" IsSnapToTickEnabled="True"/>
+                        <TextBlock Text="{Binding ElementName=RatingSlider, Path=Value}" FontWeight="Bold" Margin="10,0,0,0"/>
+                    </StackPanel>
+                    <Button Content="Написать отзыв" Width="150" Height="35" Margin="0,10,0,0"
+                            Click="SubmitReview_Click"/>
+                </StackPanel>
+
+                <StackPanel x:Name="ReviewSortPanel" Orientation="Horizontal" Margin="0,0,0,10" Visibility="Collapsed">
+                    <TextBlock Text="Сортировать:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <ComboBox x:Name="ReviewSortComboBox" Width="200" SelectedIndex="0" SelectionChanged="ReviewSortComboBox_SelectionChanged" materialDesign:HintAssist.Hint="Отсортировать отзывы">
+                        <ComboBoxItem Content="По умолчанию"/>
+                        <ComboBoxItem Content="Высокий рейтинг"/>
+                        <ComboBoxItem Content="Низкий рейтинг"/>
+                        <ComboBoxItem Content="Самые новые"/>
+                        <ComboBoxItem Content="Самые старые"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <ScrollViewer MaxHeight="250" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl x:Name="ReviewsItemsControl">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderThickness="0,0,0,1" BorderBrush="LightGray" Padding="5" Margin="0,5,0,5">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding UserName}" FontWeight="Bold" Margin="0, 0, 5, 0"/>
+                                            <TextBlock Text="{Binding CreatedAt, StringFormat={}{0:dd.MM.yyyy HH:mm}}" 
+                                                       Foreground="Gray"/>
+                                        </StackPanel>
+                                        <TextBlock Grid.Row="1" Text="{Binding Comment}" TextWrapping="Wrap" Margin="0,5,0,0"/>
+                                        <TextBlock Grid.Row="2" Text="{Binding Rating, StringFormat='Оценка: {0}'}" Foreground="Orange"/>
+                                        <Button Grid.Column="1" Grid.RowSpan="3" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Удалить отзыв" 
+                                                Visibility="{Binding IsMine, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                                                Click="DeleteReview_Click" Width="Auto"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,20,0,0" HorizontalAlignment="Left">
+                <Button Content="← Назад"
+                        Width="120"
+                        Height="35"
+                        Click="BackButton_Click"/>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Page>

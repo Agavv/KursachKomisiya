@@ -1,0 +1,172 @@
+﻿<Page x:Class="MebelShop.Customer.CheckoutPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      Title="Оформление заказа" Background="{DynamicResource MaterialDesignPaper}">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="20" Width="600">
+
+            <TextBlock Text="Данные покупателя" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="FirstNameTextBox" Grid.Column="0" Margin="0,0,5,0" materialDesign:HintAssist.Hint="Имя" TextChanged="FirstNameTextBox_TextChanged"/>
+                <TextBox x:Name="LastNameTextBox" Grid.Column="1" Margin="5,0,0,0" materialDesign:HintAssist.Hint="Фамилия" TextChanged="LastNameTextBox_TextChanged"/>
+            </Grid>
+
+            <Separator Margin="0,15"/>
+
+            <TextBlock Text="Ваши товары" FontSize="20" FontWeight="Bold" Margin="0,10,0,10"/>
+            <ItemsControl x:Name="OrderItemsControl">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Orange" BorderThickness="1" Padding="6" Margin="0,5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.Column="0"  Source="{Binding MainImageUrl}" Width="60" Height="60" 
+                                        Stretch="Uniform" Margin="0,0,8,0" RenderOptions.BitmapScalingMode="HighQuality"
+                                        SnapsToDevicePixels="True"/>
+                                <TextBlock Grid.Column="1" Margin="0,0,8,0" Text="{Binding ProductName}" 
+                                           VerticalAlignment="Center" 
+                                           FontWeight="SemiBold" 
+                                           TextTrimming="CharacterEllipsis"/>
+                                <TextBlock Grid.Column="2" Text="{Binding Price, StringFormat='{}{0:N2} ₽'}"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Column="3" Text="{Binding Quantity, StringFormat='×{0}'}"
+                                           Margin="5, 0"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Foreground="Gray"
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Grid.Column="4" Text="{Binding TotalPrice, StringFormat='{}{0:N2} ₽'}"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Right"
+                                           FontWeight="Bold"
+                                           Foreground="Orange">
+                                    <TextBlock.ToolTip>
+                                        <TextBlock>
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="Цена за шт.: ₽{0:N2} — Кол-во: {1}">
+                                                    <Binding Path="Price"/>
+                                                    <Binding Path="Quantity"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </TextBlock.ToolTip>
+                                </TextBlock>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Separator Margin="0,15"/>
+
+            <TextBlock Text="Адрес доставки" FontSize="20" FontWeight="Bold" Margin="0,10,0,10"/>
+            <StackPanel>
+                <Grid Margin="0,0,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="AUto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <RadioButton Grid.Column="0" Content="Самовывоз" GroupName="DeliveryOption"
+                                 Margin="0,0,10,0" IsChecked="True"/>
+                    <ComboBox Grid.Column="1" x:Name="PickupPointsComboBox" Margin="0,0,10,0" SelectedIndex="0"/>
+                    <Button Grid.Column="2" Content="Показать на карте" Style="{StaticResource MaterialDesignRaisedButton}"
+                            Click="ShowPickupOnMap_Click"/>
+                </Grid>
+
+                <Grid x:Name="DeliveryAddressPanel" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <RadioButton Content="Доставка по адресу" GroupName="DeliveryOption" Margin="0,10,10,10" />
+                    <ComboBox x:Name="AddressComboBox"
+                              Grid.Column="1"
+                              IsEditable="True"
+                              StaysOpenOnEdit="True"
+                              IsTextSearchEnabled="False"
+                              materialDesign:HintAssist.Hint="Введите адрес"
+                              SelectionChanged="AddressComboBox_SelectionChanged"
+                              TextBoxBase.TextChanged="AddressComboBox_TextChanged"
+                              PreviewMouseLeftButtonUp="AddressComboBox_PreviewMouseLeftButtonUp"/>
+                </Grid>
+            </StackPanel>
+
+            <Separator Margin="0,15"/>
+
+            <TextBlock Text="Способ оплаты" FontSize="20" FontWeight="Bold" Margin="0,10,0,10"/>
+            <StackPanel>
+                <RadioButton x:Name="CashOnDeliveryRadio"
+                 IsChecked="True"
+                 Content="Оплата при получении"
+                 GroupName="PaymentOption"
+                 Margin="0,0,0,5"
+                 Checked="PaymentOption_Checked"/>
+
+                <StackPanel x:Name="CashOnDeliveryOptions" Margin="20,0,0,5" Visibility="Visible">
+                    <RadioButton Content="Наличными" GroupName="CashOnDeliveryMethod" IsChecked="True"/>
+                    <RadioButton Content="Картой" GroupName="CashOnDeliveryMethod"/>
+                </StackPanel>
+
+                <RadioButton x:Name="OnlineRadio"
+                             Content="Онлайн"
+                             GroupName="PaymentOption"
+                             Margin="0,5,0,5"
+                             Checked="PaymentOption_Checked"/>
+
+                <Grid x:Name="CardPaymentPanel" Visibility="Collapsed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBox Grid.ColumnSpan="2"
+                             x:Name="CardNumberTextBox"
+                             materialDesign:HintAssist.Hint="Номер карты"
+                             TextChanged="CardNumberTextBox_TextChanged"
+                             MaxLength="19"/>
+                    <TextBox Grid.Row="1" Grid.Column="0"
+                             x:Name="CardExpiryTextBox"
+                             Margin="0, 5, 5, 0"
+                             materialDesign:HintAssist.Hint="ММ/ГГ"
+                             TextChanged="CardExpiryTextBox_TextChanged"
+                             MaxLength="5"/>
+                    <TextBox Grid.Row="1" Grid.Column="1"
+                             x:Name="CardCvvTextBox"
+                             Margin="5, 5, 0, 0"
+                             materialDesign:HintAssist.Hint="CVV"
+                             TextChanged="CardCvvTextBox_TextChanged"
+                             MaxLength="3"/>
+                </Grid>
+            </StackPanel>
+
+            <Separator Margin="0,15"/>
+
+            <StackPanel Margin="0,10,0,0">
+                <TextBlock x:Name="TotalItemsTextBlock" FontSize="16" FontWeight="Bold" Margin="0,0,0,5"/>
+                <TextBlock x:Name="TotalPriceTextBlock" FontSize="16" FontWeight="Bold" Margin="0,0,0,5"/>
+                <Button Content="Подтвердить заказ" Width="200" Height="40" Style="{StaticResource MaterialDesignRaisedButton}" Margin="0,10,0,0" Click="SubmitOrder_Click"/>
+            </StackPanel>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>
