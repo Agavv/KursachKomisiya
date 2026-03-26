@@ -1,49 +1,106 @@
-﻿<Page x:Class="MebelShop.Director.LogsPage"
+<Page x:Class="MebelShop.Director.LogsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       Background="{DynamicResource MaterialDesignPaper}"
       TextElement.Foreground="{DynamicResource MaterialDesignBody}">
 
-    <Grid Margin="15">
+    <Grid Margin="20,16">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Панель фильтров -->
-        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-            <TextBox VerticalAlignment="Center" x:Name="EmailFilterBox" materialDesign:HintAssist.Hint="Email пользователя" Width="200"/>
-            <ComboBox VerticalAlignment="Center" x:Name="RoleFilterBox" Width="150" Margin="10,0" materialDesign:HintAssist.Hint="Роль">
-                <ComboBoxItem Content="Покупатель"/>
-                <ComboBoxItem Content="Менеджер"/>
-                <ComboBoxItem Content="Администратор"/>
-                <ComboBoxItem Content="Директор"/>
-            </ComboBox>
-            <DatePicker VerticalAlignment="Center" x:Name="DateFromPicker" materialDesign:HintAssist.Hint="С даты"/>
-            <DatePicker VerticalAlignment="Center" x:Name="DateToPicker" materialDesign:HintAssist.Hint="По дату" Margin="10,0"/>
-            <TextBox VerticalAlignment="Center" x:Name="DescriptionFilterBox" materialDesign:HintAssist.Hint="Описание содержит..." Width="200"/>
-            <Button VerticalAlignment="Center" Content="Поиск" Click="ApplyFilters_Click" Margin="10 0 10 0"/>
-            <Button VerticalAlignment="Center" Content="Сбросить" Click="Reset_Click"/>
+        <!-- Page title -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+            <TextBlock Text="📜" FontSize="22" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <TextBlock Text="Журнал аудита" FontSize="22" FontWeight="Bold" VerticalAlignment="Center"/>
         </StackPanel>
 
-        <!-- Таблица логов -->
-        <DataGrid x:Name="AuditGrid"
-                  Grid.Row="1"
-                  AutoGenerateColumns="False"
-                  IsReadOnly="True"
-                  CanUserAddRows="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding IdAudit}" Width="Auto"/>
-                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*"/>
-                <DataGridTextColumn Header="Роль" Binding="{Binding Role}" Width="*"/>
-                <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="3*"/>
-                <DataGridTextColumn Header="Дата и время" Binding="{Binding CreatedAt, StringFormat={}{0:dd.MM.yyyy HH:mm:ss}}" Width="*"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <!-- Filter bar card -->
+        <Border Grid.Row="1" CornerRadius="10" Margin="0,0,0,12"
+                Background="{DynamicResource MaterialDesignPaper}">
+            <Border.Effect>
+                <DropShadowEffect Color="#000" Opacity="0.07" BlurRadius="8" ShadowDepth="2" Direction="270"/>
+            </Border.Effect>
+            <Grid Margin="16,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="140"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="140"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="140"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-        <Button Grid.Row="2" Content="Экспортировать в CSV" Width="200" Margin="0,10,0,0" Click="ExportLogs_Click" HorizontalAlignment="Center"/>
+                <TextBox Grid.Column="0" x:Name="EmailFilterBox"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         materialDesign:HintAssist.Hint="Email пользователя"/>
+                <ComboBox Grid.Column="2" x:Name="RoleFilterBox"
+                          Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                          materialDesign:HintAssist.Hint="Роль">
+                    <ComboBoxItem Content="Покупатель"/>
+                    <ComboBoxItem Content="Менеджер"/>
+                    <ComboBoxItem Content="Администратор"/>
+                    <ComboBoxItem Content="Директор"/>
+                </ComboBox>
+                <DatePicker Grid.Column="4" x:Name="DateFromPicker"
+                            Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                            materialDesign:HintAssist.Hint="С даты"/>
+                <DatePicker Grid.Column="6" x:Name="DateToPicker"
+                            Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                            materialDesign:HintAssist.Hint="По дату"/>
+                <TextBox Grid.Column="8" x:Name="DescriptionFilterBox"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         materialDesign:HintAssist.Hint="Описание содержит..."/>
+                <Button Grid.Column="10" Content="🔍  Поиск"
+                        Height="40" Padding="14,0"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        materialDesign:ButtonAssist.CornerRadius="6"
+                        Click="ApplyFilters_Click"/>
+                <Button Grid.Column="12" Content="✕  Сбросить"
+                        Height="40" Padding="14,0"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        materialDesign:ButtonAssist.CornerRadius="6"
+                        Click="Reset_Click"/>
+            </Grid>
+        </Border>
+
+        <!-- Logs DataGrid card -->
+        <Border Grid.Row="2" CornerRadius="10" Background="{DynamicResource MaterialDesignPaper}">
+            <Border.Effect>
+                <DropShadowEffect Color="#000" Opacity="0.07" BlurRadius="10" ShadowDepth="2" Direction="270"/>
+            </Border.Effect>
+            <DataGrid x:Name="AuditGrid"
+                      Margin="4"
+                      AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False"
+                      materialDesign:DataGridAssist.CellPadding="10,6"
+                      materialDesign:DataGridAssist.ColumnHeaderPadding="10">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID"          Binding="{Binding IdAudit}"                                          Width="60"/>
+                    <DataGridTextColumn Header="Email"       Binding="{Binding Email}"                                            Width="2*"/>
+                    <DataGridTextColumn Header="Роль"        Binding="{Binding Role}"                                             Width="*"/>
+                    <DataGridTextColumn Header="Описание"    Binding="{Binding Description}"                                      Width="4*"/>
+                    <DataGridTextColumn Header="Дата и время" Binding="{Binding CreatedAt, StringFormat={}{0:dd.MM.yyyy HH:mm:ss}}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <Button Grid.Row="3" Content="📥  Экспортировать в CSV"
+                Height="40" Padding="24,0"
+                Margin="0,12,0,0"
+                HorizontalAlignment="Center"
+                Style="{StaticResource MaterialDesignOutlinedButton}"
+                materialDesign:ButtonAssist.CornerRadius="8"
+                Click="ExportLogs_Click"/>
     </Grid>
 </Page>
-
