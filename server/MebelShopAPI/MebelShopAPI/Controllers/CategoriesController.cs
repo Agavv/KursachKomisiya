@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -224,11 +224,14 @@ namespace MebelShopAPI.Controllers
 
         private int? GetUserId()
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
-                return userId;
+            // FIX: Sub claim is set to email (not int ID), so int.TryParse always failed.
+            // Use Identity.Name (also the email) and look up the user ID from DB.
+            var email = User.Identity?.Name;
+            if (string.IsNullOrEmpty(email)) return null;
 
-            return null;
+            // Synchronous lookup to keep non-async helper signature
+            var user = _context.Users.FirstOrDefault(u => u.Email == email);
+            return user?.IdUser;
         }
     }
 

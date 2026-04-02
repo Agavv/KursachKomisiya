@@ -59,7 +59,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Border Padding="10" Margin="0,4"
-                                            CornerRadius="8" Background="#F8F9FA">
+                                            CornerRadius="8" Background="{DynamicResource MaterialDesignCardBackground}">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="56"/>
@@ -68,7 +68,7 @@
                                                 <ColumnDefinition Width="40"/>
                                                 <ColumnDefinition Width="90"/>
                                             </Grid.ColumnDefinitions>
-                                            <Border CornerRadius="6" ClipToBounds="True" Background="#E0E0E0">
+                                            <Border CornerRadius="6" ClipToBounds="True" Background="{DynamicResource MaterialDesignCardBackground}">
                                                 <Image Grid.Column="0" Source="{Binding MainImageUrl}"
                                                        Width="56" Height="56" Stretch="UniformToFill"
                                                        RenderOptions.BitmapScalingMode="HighQuality"
@@ -188,7 +188,7 @@
                                      Checked="PaymentOption_Checked"/>
 
                         <Border x:Name="CardPaymentPanel" Visibility="Collapsed"
-                                CornerRadius="8" Background="#F8F9FA" Padding="16">
+                                CornerRadius="8" Background="{DynamicResource MaterialDesignCardBackground}" Padding="16">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
@@ -232,7 +232,7 @@
                 </Border.Effect>
                 <StackPanel Margin="22">
                     <TextBlock Text="Ваш заказ" FontSize="18" FontWeight="Bold" Margin="0,0,0,16"/>
-                    <Border Height="1" Background="#ECEFF1" Margin="0,0,0,14"/>
+                    <Border Height="1" Background="{DynamicResource MaterialDesignDivider}" Margin="0,0,0,14"/>
                     <TextBlock x:Name="TotalItemsTextBlock" FontSize="14"
                                Foreground="{DynamicResource MaterialDesignBodyLight}" Margin="0,0,0,8"/>
                     <TextBlock x:Name="TotalPriceTextBlock" FontSize="22" FontWeight="Bold"

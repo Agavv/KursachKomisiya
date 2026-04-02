@@ -10,6 +10,14 @@
       TextElement.Foreground="{DynamicResource MaterialDesignBody}"
       Title="Сотрудники">
 
+    <!-- MC6007 FIX: ContextMenu in Page.Resources -->
+    <Page.Resources>
+        <ContextMenu x:Key="UserRowContextMenu">
+            <MenuItem Header="✏  Изменить пользователя" Click="ChangeUser_Click"/>
+            <MenuItem Header="🗑  Удалить пользователя"  Click="DeleteUser_Click"/>
+        </ContextMenu>
+    </Page.Resources>
+
     <materialDesign:DialogHost Identifier="RootDialog" x:Name="EmployeesDialogHost">
         <Grid Margin="20,16">
             <Grid.RowDefinitions>
@@ -18,31 +26,30 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Page title -->
+            <!-- Title -->
             <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
                 <TextBlock Text="👥" FontSize="22" VerticalAlignment="Center" Margin="0,0,10,0"/>
                 <TextBlock Text="Сотрудники" FontSize="22" FontWeight="Bold" VerticalAlignment="Center"/>
             </StackPanel>
 
-            <!-- Filter bar card -->
+            <!-- Filter bar -->
             <Border Grid.Row="1" CornerRadius="10" Margin="0,0,0,12"
                     Background="{DynamicResource MaterialDesignPaper}">
                 <Border.Effect>
                     <DropShadowEffect Color="#000" Opacity="0.07" BlurRadius="8" ShadowDepth="2" Direction="270"/>
                 </Border.Effect>
-                <StackPanel Orientation="Horizontal" Margin="16,12" FlowDirection="LeftToRight">
+                <WrapPanel Margin="14,10">
                     <TextBox x:Name="IdFilterBox" Width="80"
                              Style="{StaticResource MaterialDesignOutlinedTextBox}"
                              materialDesign:HintAssist.Hint="ID"
-                             Margin="0,0,10,0"/>
-                    <TextBox x:Name="EmailFilterBox" Width="170"
+                             Margin="0,4,8,4"/>
+                    <TextBox x:Name="EmailFilterBox" Width="180"
                              Style="{StaticResource MaterialDesignOutlinedTextBox}"
                              materialDesign:HintAssist.Hint="Email"
-                             Margin="0,0,10,0"/>
+                             Margin="0,4,8,4"/>
                     <ComboBox x:Name="RoleFilterBox" Width="160"
-                              Style="{StaticResource MaterialDesignOutlinedComboBox}"
                               materialDesign:HintAssist.Hint="Роль"
-                              Margin="0,0,10,0">
+                              Margin="0,4,8,4">
                         <ComboBoxItem Content="Все сотрудники" IsSelected="True"/>
                         <ComboBoxItem Content="Администратор"/>
                         <ComboBoxItem Content="Директор"/>
@@ -52,50 +59,51 @@
                     <TextBox x:Name="FirstNameFilterBox" Width="140"
                              Style="{StaticResource MaterialDesignOutlinedTextBox}"
                              materialDesign:HintAssist.Hint="Имя"
-                             Margin="0,0,10,0"/>
+                             Margin="0,4,8,4"/>
                     <TextBox x:Name="SurnameFilterBox" Width="140"
                              Style="{StaticResource MaterialDesignOutlinedTextBox}"
                              materialDesign:HintAssist.Hint="Фамилия"
-                             Margin="0,0,10,0"/>
+                             Margin="0,4,8,4"/>
                     <Button Content="✕  Сбросить" Height="40" Padding="14,0"
                             Style="{StaticResource MaterialDesignOutlinedButton}"
                             materialDesign:ButtonAssist.CornerRadius="6"
-                            Margin="0,0,10,0"
+                            Margin="0,4,8,4"
                             Click="Reset_Click"/>
                     <Button Content="+ Добавить" Height="40" Padding="14,0"
                             Style="{StaticResource MaterialDesignRaisedButton}"
                             materialDesign:ButtonAssist.CornerRadius="6"
+                            Margin="0,4,0,4"
                             Click="AddUser_Click"/>
-                </StackPanel>
+                </WrapPanel>
             </Border>
 
-            <!-- Users DataGrid card -->
+            <!-- Users DataGrid -->
             <Border Grid.Row="2" CornerRadius="10" Background="{DynamicResource MaterialDesignPaper}">
                 <Border.Effect>
                     <DropShadowEffect Color="#000" Opacity="0.07" BlurRadius="10" ShadowDepth="2" Direction="270"/>
                 </Border.Effect>
                 <DataGrid x:Name="UsersGrid"
                           Margin="4"
-                          AutoGenerateColumns="False"
-                          CanUserAddRows="False"
-                          IsReadOnly="True"
+                          AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
                           RowHeight="42"
                           materialDesign:DataGridAssist.CellPadding="10,6"
                           materialDesign:DataGridAssist.ColumnHeaderPadding="10"
                           MouseDoubleClick="UsersGrid_MouseDoubleClick"
                           MouseRightButtonDown="UsersDataGrid_MouseRightButtonDown">
-                    <DataGrid.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="✏  Изменить пользователя" Click="ChangeUser_Click"/>
-                            <MenuItem Header="🗑  Удалить пользователя"  Click="DeleteUser_Click"/>
-                        </ContextMenu>
-                    </DataGrid.ContextMenu>
+
+                    <!-- ContextMenu from Page.Resources — fixes MC6007 -->
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                            <Setter Property="ContextMenu" Value="{StaticResource UserRowContextMenu}"/>
+                        </Style>
+                    </DataGrid.RowStyle>
+
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID"       Binding="{Binding IdUser}"    Width="60"/>
-                        <DataGridTextColumn Header="Email"    Binding="{Binding Email}"     Width="2*"/>
-                        <DataGridTextColumn Header="Роль"     Binding="{Binding Role}"      Width="*"/>
-                        <DataGridTextColumn Header="Имя"      Binding="{Binding FirstName}" Width="*"/>
-                        <DataGridTextColumn Header="Фамилия"  Binding="{Binding Surname}"   Width="*"/>
+                        <DataGridTextColumn Header="ID"      Binding="{Binding IdUser}"    Width="60"/>
+                        <DataGridTextColumn Header="Email"   Binding="{Binding Email}"     Width="2*"/>
+                        <DataGridTextColumn Header="Роль"    Binding="{Binding Role}"      Width="*"/>
+                        <DataGridTextColumn Header="Имя"     Binding="{Binding FirstName}" Width="*"/>
+                        <DataGridTextColumn Header="Фамилия" Binding="{Binding Surname}"   Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>
@@ -103,88 +111,75 @@
 
         <!-- Edit / Add dialog -->
         <materialDesign:DialogHost.DialogContent>
-            <Border Padding="24" Width="420" CornerRadius="10"
-                    Background="{DynamicResource MaterialDesignPaper}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+            <Grid x:Name="EditDialog" Margin="24" Width="420">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                    <TextBlock x:Name="DialogTitle"
-                               Text="Редактирование сотрудника"
-                               FontSize="18" FontWeight="Bold" Margin="0,0,0,18"/>
+                <TextBlock x:Name="DialogTitle"
+                           Text="Редактирование сотрудника"
+                           FontSize="18" FontWeight="Bold" Margin="0,0,0,18"/>
 
-                    <StackPanel Grid.Row="1">
-                        <TextBlock Text="Email" FontSize="12" FontWeight="Medium"
-                                   Foreground="{DynamicResource MaterialDesignBodyLight}" Margin="0,0,0,4"/>
-                        <TextBox x:Name="EditEmailBox"
-                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                 materialDesign:HintAssist.Hint="example@mail.com"
-                                 Margin="0,0,0,12"/>
+                <StackPanel Grid.Row="1">
+                    <TextBlock Text="Email" FontSize="12" FontWeight="Medium"
+                               Foreground="{DynamicResource MaterialDesignBodyLight}" Margin="0,0,0,4"/>
+                    <TextBox x:Name="EditEmailBox"
+                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                             materialDesign:HintAssist.Hint="example@mail.com"
+                             Margin="0,0,0,12"/>
 
-                        <TextBlock Text="Роль" FontSize="12" FontWeight="Medium"
-                                   Foreground="{DynamicResource MaterialDesignBodyLight}" Margin="0,0,0,4"/>
-                        <ComboBox x:Name="EditRoleBox"
-                                  Style="{StaticResource MaterialDesignOutlinedComboBox}"
-                                  materialDesign:HintAssist.Hint="Выберите роль"
-                                  SelectedIndex="0" Margin="0,0,0,12">
-                            <ComboBoxItem Content="Администратор"/>
-                            <ComboBoxItem Content="Директор"/>
-                            <ComboBoxItem Content="Менеджер"/>
-                            <ComboBoxItem Content="Покупатель"/>
-                        </ComboBox>
+                    <TextBlock Text="Роль" FontSize="12" FontWeight="Medium"
+                               Foreground="{DynamicResource MaterialDesignBodyLight}" Margin="0,0,0,4"/>
+                    <ComboBox x:Name="EditRoleBox" SelectedIndex="0" Margin="0,0,0,12"
+                              materialDesign:HintAssist.Hint="Выберите роль">
+                        <ComboBoxItem Content="Администратор"/>
+                        <ComboBoxItem Content="Директор"/>
+                        <ComboBoxItem Content="Менеджер"/>
+                        <ComboBoxItem Content="Покупатель"/>
+                    </ComboBox>
 
-                        <Grid Margin="0,0,0,12">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="16"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Text="Имя" FontSize="12" FontWeight="Medium"
-                                           Foreground="{DynamicResource MaterialDesignBodyLight}" Margin="0,0,0,4"/>
-                                <TextBox x:Name="EditFirstNameBox"
-                                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                         materialDesign:HintAssist.Hint="Имя"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="2">
-                                <TextBlock Text="Фамилия" FontSize="12" FontWeight="Medium"
-                                           Foreground="{DynamicResource MaterialDesignBodyLight}" Margin="0,0,0,4"/>
-                                <TextBox x:Name="EditSurnameBox"
-                                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                         materialDesign:HintAssist.Hint="Фамилия"/>
-                            </StackPanel>
-                        </Grid>
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="Имя" FontSize="12" FontWeight="Medium"
+                                       Foreground="{DynamicResource MaterialDesignBodyLight}" Margin="0,0,0,4"/>
+                            <TextBox x:Name="EditFirstNameBox"
+                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                     materialDesign:HintAssist.Hint="Имя"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Фамилия" FontSize="12" FontWeight="Medium"
+                                       Foreground="{DynamicResource MaterialDesignBodyLight}" Margin="0,0,0,4"/>
+                            <TextBox x:Name="EditSurnameBox"
+                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                     materialDesign:HintAssist.Hint="Фамилия"/>
+                        </StackPanel>
+                    </Grid>
 
-                        <TextBlock Text="Новый пароль" FontSize="12" FontWeight="Medium"
-                                   Foreground="{DynamicResource MaterialDesignBodyLight}" Margin="0,0,0,4"/>
-                        <PasswordBox x:Name="EditPasswordBox"
-                                     Style="{StaticResource MaterialDesignOutlinedPasswordBox}"
-                                     materialDesign:HintAssist.Hint="Оставьте пустым, если не меняете"/>
-                    </StackPanel>
+                    <TextBlock Text="Новый пароль" FontSize="12" FontWeight="Medium"
+                               Foreground="{DynamicResource MaterialDesignBodyLight}" Margin="0,0,0,4"/>
+                    <PasswordBox x:Name="EditPasswordBox"
+                                 Style="{StaticResource MaterialDesignOutlinedPasswordBox}"
+                                 materialDesign:HintAssist.Hint="Оставьте пустым, если не меняете"/>
+                </StackPanel>
 
-                    <StackPanel Grid.Row="2" Orientation="Horizontal"
-                                HorizontalAlignment="Right" Margin="0,20,0,0">
-                        <Button Content="Отмена"
-                                Style="{StaticResource MaterialDesignOutlinedButton}"
-                                materialDesign:ButtonAssist.CornerRadius="6"
-                                Margin="0,0,8,0"
-                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
-                        <Button Content="🗑  Удалить"
-                                Style="{StaticResource MaterialDesignOutlinedButton}"
-                                materialDesign:ButtonAssist.CornerRadius="6"
-                                Foreground="#EF5350" BorderBrush="#EF5350"
-                                Margin="0,0,8,0"
-                                Click="DeleteUser_Click"/>
-                        <Button Content="✓  Сохранить"
-                                Style="{StaticResource MaterialDesignRaisedButton}"
-                                materialDesign:ButtonAssist.CornerRadius="6"
-                                Click="SaveUser_Click"/>
-                    </StackPanel>
-                </Grid>
-            </Border>
+                <StackPanel Grid.Row="2" Orientation="Horizontal"
+                            HorizontalAlignment="Right" Margin="0,20,0,0">
+                    <Button Content="Отмена" Margin="0,0,8,0"
+                            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                    <Button Content="Удалить" Margin="0,0,8,0"
+                            Click="DeleteUser_Click"/>
+                    <Button Content="Сохранить"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            Click="SaveUser_Click"/>
+                </StackPanel>
+            </Grid>
         </materialDesign:DialogHost.DialogContent>
     </materialDesign:DialogHost>
 </Page>

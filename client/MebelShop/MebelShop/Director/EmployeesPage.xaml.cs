@@ -131,7 +131,7 @@ namespace MebelShop.Director
                 if (roleItem != null)
                     EditRoleBox.SelectedItem = roleItem;
 
-                //await DialogHost.Show(EditDialog, "RootDialog");
+                await DialogHost.Show(EditDialog, "RootDialog");
             }
         }
 

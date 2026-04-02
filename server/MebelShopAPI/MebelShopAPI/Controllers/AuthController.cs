@@ -1,4 +1,4 @@
-﻿using API.DTOs.Auth;
+using API.DTOs.Auth;
 using API.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -199,7 +199,9 @@ namespace MebelShopAPI.Controllers
         [HttpPost("send-reset-code")]
         public async Task<IActionResult> SendResetCode([FromBody] ResetPasswordRequestDto dto)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+            var user = await _context.Users
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.Email == dto.Email);
             if (user == null)
                 return Ok(new ApiResponseDto { Success = false, Message = "Пользователь с таким Email не найден" });
 
@@ -268,7 +270,9 @@ namespace MebelShopAPI.Controllers
         [HttpPost("change-password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto dto)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+            var user = await _context.Users
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.Email == dto.Email);
             if (user == null)
                 return Ok(new ApiResponseDto { Success = false, Message = "Пользователь не найден" });
 

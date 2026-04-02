@@ -1,4 +1,4 @@
-﻿using API.Helpers;
+using API.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -167,12 +167,21 @@ namespace MebelShopAPI.Controllers
 </body>
 </html>";
 
-            await emailHelper.SendEmail(
-                user.Email,
-                "Ваш заказ MebelShop",
-                body: "Спасибо за ваш заказ! Просмотрите детали в HTML версии письма.",
-                htmlBody: emailBody 
-            );
+            // FIX: wrap SendEmail in try/catch — SMTP failure must NOT roll back the saved order
+            try
+            {
+                await emailHelper.SendEmail(
+                    user.Email,
+                    "Ваш заказ MebelShop",
+                    body: "Спасибо за ваш заказ! Просмотрите детали в HTML версии письма.",
+                    htmlBody: emailBody
+                );
+            }
+            catch (Exception emailEx)
+            {
+                // Log but continue — order is already persisted
+                Console.WriteLine($"[Email warning] Не удалось отправить письмо о заказе: {emailEx.Message}");
+            }
 
             _context.CartItems.RemoveRange(cartItems);
             await _context.SaveChangesAsync();

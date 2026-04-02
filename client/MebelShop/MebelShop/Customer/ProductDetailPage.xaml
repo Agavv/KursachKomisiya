@@ -16,8 +16,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Breadcrumb back button -->
-        <Border Grid.Row="0" Padding="24,14" BorderThickness="0,0,0,1" BorderBrush="#ECEFF1">
+        <!-- Breadcrumb -->
+        <Border Grid.Row="0" Padding="24,12" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource MaterialDesignDivider}">
             <Button Content="← Назад в каталог"
                     Style="{StaticResource MaterialDesignFlatButton}"
                     Foreground="{DynamicResource PrimaryHueMidBrush}"
@@ -26,21 +26,21 @@
         </Border>
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <Grid Margin="24">
+            <Grid Margin="24,20,24,24">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="440" MaxWidth="480"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Images column -->
+                <!-- ===== Images column ===== -->
                 <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
                         CornerRadius="12" ClipToBounds="True"
-                        Background="#F8F9FA" Margin="0,0,24,0"
+                        Background="{DynamicResource MaterialDesignCardBackground}" Margin="0,0,24,0"
                         Height="440" VerticalAlignment="Top">
                     <Border.Effect>
                         <DropShadowEffect Color="#000" Opacity="0.08" BlurRadius="12" ShadowDepth="2" Direction="270"/>
@@ -66,19 +66,24 @@
                     </ScrollViewer>
                 </Border>
 
-                <!-- Product info column -->
+                <!-- ===== Product info ===== -->
                 <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,0,20">
                     <TextBlock x:Name="ProductNameText"
                                FontSize="26" FontWeight="Bold"
                                TextWrapping="Wrap" Margin="0,0,0,12"/>
 
+                    <!-- FIX: Code-behind sets AverageRatingText.Text = "⭐ 4.5"
+                         so no static star prefix here to avoid "★ ⭐ 4.5" double -->
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
-                        <TextBlock Text="★" Foreground="#FFC107" FontSize="18" VerticalAlignment="Center"/>
                         <TextBlock x:Name="AverageRatingText"
                                    FontSize="16" FontWeight="SemiBold"
-                                   Foreground="#FFC107" VerticalAlignment="Center" Margin="4,0"/>
+                                   Foreground="#FFC107"/>
+                        <TextBlock Text="  |  " FontSize="14"
+                                   Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                   VerticalAlignment="Center"/>
                         <TextBlock x:Name="ReviewsCountText"
-                                   FontSize="14" Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                   FontSize="14"
+                                   Foreground="{DynamicResource MaterialDesignBodyLight}"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
 
@@ -87,16 +92,16 @@
                                Foreground="{DynamicResource SecondaryHueMidBrush}"
                                Margin="0,0,0,20"/>
 
-                    <Border Height="1" Background="#ECEFF1" Margin="0,0,0,16"/>
+                    <Border Height="1" Background="{DynamicResource MaterialDesignDivider}" Margin="0,0,0,16"/>
 
-                    <TextBlock Text="Описание" FontSize="14" FontWeight="SemiBold"
-                               Foreground="{DynamicResource MaterialDesignBodyLight}" Margin="0,0,0,8"/>
+                    <TextBlock Text="Описание" FontSize="13" FontWeight="SemiBold"
+                               Foreground="{DynamicResource MaterialDesignBodyLight}"
+                               Margin="0,0,0,8"/>
                     <TextBlock x:Name="DescriptionText"
-                               TextWrapping="Wrap" FontSize="14" LineHeight="22"
-                               Foreground="{DynamicResource MaterialDesignBody}"/>
+                               TextWrapping="Wrap" FontSize="14" LineHeight="22"/>
                 </StackPanel>
 
-                <!-- Characteristics -->
+                <!-- ===== Characteristics ===== -->
                 <Border Grid.Row="1" Grid.Column="1" CornerRadius="10"
                         Background="{DynamicResource MaterialDesignPaper}"
                         Margin="0,0,0,24">
@@ -104,7 +109,7 @@
                         <DropShadowEffect Color="#000" Opacity="0.07" BlurRadius="10" ShadowDepth="2" Direction="270"/>
                     </Border.Effect>
                     <StackPanel Margin="20">
-                        <TextBlock Text="Характеристики" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                        <TextBlock Text="Характеристики" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,12"/>
                         <ItemsControl x:Name="CharacteristicsItemsControl">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
@@ -113,11 +118,9 @@
                                             <ColumnDefinition Width="180"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding Name}"
-                                                   FontWeight="Medium" FontSize="13"
+                                        <TextBlock Text="{Binding Name}" FontSize="13"
                                                    Foreground="{DynamicResource MaterialDesignBodyLight}"/>
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding Value}"
+                                        <TextBlock Grid.Column="1" Text="{Binding Value}"
                                                    FontSize="13" FontWeight="SemiBold"/>
                                     </Grid>
                                 </DataTemplate>
@@ -126,7 +129,7 @@
                     </StackPanel>
                 </Border>
 
-                <!-- Reviews section -->
+                <!-- ===== Reviews section ===== -->
                 <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                         CornerRadius="10" Background="{DynamicResource MaterialDesignPaper}"
                         Margin="0,0,0,24">
@@ -134,47 +137,46 @@
                         <DropShadowEffect Color="#000" Opacity="0.07" BlurRadius="10" ShadowDepth="2" Direction="270"/>
                     </Border.Effect>
                     <StackPanel Margin="20">
-                        <TextBlock Text="Отзывы покупателей" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,16"/>
+                        <TextBlock Text="Отзывы покупателей"
+                                   FontSize="18" FontWeight="SemiBold" Margin="0,0,0,16"/>
 
                         <!-- Add review panel -->
-                        <Border x:Name="AddReviewPanel"
-                                Visibility="Collapsed"
-                                CornerRadius="8" Background="#F8F9FA"
-                                Padding="16" Margin="0,0,0,16">
-                            <StackPanel>
-                                <TextBlock Text="Ваш отзыв" FontSize="13" FontWeight="Medium" Margin="0,0,0,8"/>
-                                <TextBox x:Name="ReviewTextBox"
-                                         Height="70" TextWrapping="Wrap" AcceptsReturn="True"
-                                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                         materialDesign:HintAssist.Hint="Поделитесь впечатлением о товаре..."
-                                         Margin="0,0,0,12"/>
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,12">
-                                    <TextBlock Text="★ Оценка:" FontSize="13" FontWeight="Medium"
-                                               VerticalAlignment="Center" Margin="0,0,12,0"/>
-                                    <Slider x:Name="RatingSlider" Minimum="1" Maximum="5" Value="5"
-                                            Width="160" TickFrequency="1" IsSnapToTickEnabled="True"
-                                            VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding ElementName=RatingSlider, Path=Value}"
-                                               FontWeight="Bold" FontSize="16"
-                                               Foreground="#FFC107" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                        <StackPanel x:Name="AddReviewPanel" Visibility="Collapsed" Margin="0,0,0,16">
+                            <Border CornerRadius="8" Background="{DynamicResource MaterialDesignCardBackground}" Padding="16">
+                                <StackPanel>
+                                    <TextBlock Text="Ваш отзыв" FontSize="13" FontWeight="Medium" Margin="0,0,0,8"/>
+                                    <TextBox x:Name="ReviewTextBox"
+                                             Height="70" TextWrapping="Wrap" AcceptsReturn="True"
+                                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                             materialDesign:HintAssist.Hint="Поделитесь впечатлением о товаре..."
+                                             Margin="0,0,0,12"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                        <TextBlock Text="Оценка:" FontSize="13" FontWeight="Medium"
+                                                   VerticalAlignment="Center" Margin="0,0,12,0"/>
+                                        <Slider x:Name="RatingSlider" Minimum="1" Maximum="5" Value="5"
+                                                Width="160" TickFrequency="1" IsSnapToTickEnabled="True"
+                                                VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding ElementName=RatingSlider, Path=Value}"
+                                                   FontWeight="Bold" FontSize="16"
+                                                   Foreground="#FFC107" Margin="10,0,0,0"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <Button Content="Отправить отзыв"
+                                            Height="36" Width="160" HorizontalAlignment="Left"
+                                            Style="{StaticResource MaterialDesignRaisedButton}"
+                                            materialDesign:ButtonAssist.CornerRadius="6"
+                                            Click="SubmitReview_Click"/>
                                 </StackPanel>
-                                <Button Content="Отправить отзыв"
-                                        Height="38" Width="160" HorizontalAlignment="Left"
-                                        Style="{StaticResource MaterialDesignRaisedButton}"
-                                        materialDesign:ButtonAssist.CornerRadius="6"
-                                        Click="SubmitReview_Click"/>
-                            </StackPanel>
-                        </Border>
+                            </Border>
+                        </StackPanel>
 
-                        <!-- Review sort -->
+                        <!-- Sort panel -->
                         <StackPanel x:Name="ReviewSortPanel" Orientation="Horizontal"
                                     Margin="0,0,0,14" Visibility="Collapsed">
                             <TextBlock Text="Сортировать:" FontSize="12"
                                        Foreground="{DynamicResource MaterialDesignBodyLight}"
                                        VerticalAlignment="Center" Margin="0,0,10,0"/>
-                            <ComboBox x:Name="ReviewSortComboBox" Width="200"
-                                      Style="{StaticResource MaterialDesignOutlinedComboBox}"
-                                      SelectedIndex="0"
+                            <ComboBox x:Name="ReviewSortComboBox" Width="200" SelectedIndex="0"
                                       SelectionChanged="ReviewSortComboBox_SelectionChanged">
                                 <ComboBoxItem Content="По умолчанию"/>
                                 <ComboBoxItem Content="Высокий рейтинг"/>
@@ -185,12 +187,12 @@
                         </StackPanel>
 
                         <!-- Reviews list -->
-                        <ScrollViewer MaxHeight="340" VerticalScrollBarVisibility="Auto">
+                        <ScrollViewer MaxHeight="360" VerticalScrollBarVisibility="Auto">
                             <ItemsControl x:Name="ReviewsItemsControl">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border BorderThickness="0,0,0,1" BorderBrush="#F0F0F0"
-                                                Padding="8,14,8,14" Margin="0,4">
+                                        <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource MaterialDesignDivider}"
+                                                Padding="8,14,8,14" Margin="0,2">
                                             <Grid>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
@@ -202,16 +204,8 @@
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
 
-                                                <!-- Header row -->
+                                                <!-- Header: name + date -->
                                                 <StackPanel Orientation="Horizontal">
-                                                    <Border Width="32" Height="32" CornerRadius="16"
-                                                            Background="{DynamicResource PrimaryHueLightBrush}"
-                                                            Margin="0,0,10,0">
-                                                        <TextBlock FontSize="14" FontWeight="Bold"
-                                                                   HorizontalAlignment="Center"
-                                                                   VerticalAlignment="Center"
-                                                                   Foreground="White"/>
-                                                    </Border>
                                                     <TextBlock Text="{Binding UserName}"
                                                                FontWeight="SemiBold" FontSize="14"
                                                                VerticalAlignment="Center" Margin="0,0,10,0"/>
@@ -220,19 +214,19 @@
                                                                FontSize="12" VerticalAlignment="Center"/>
                                                 </StackPanel>
 
-                                                <!-- Rating stars -->
+                                                <!-- Rating -->
                                                 <TextBlock Grid.Row="1"
-                                                           Text="{Binding Rating, StringFormat='★★★★★ ({0}/5)'}"
+                                                           Text="{Binding Rating, StringFormat='★ {0}/5'}"
                                                            Foreground="#FFC107" FontSize="13"
-                                                           Margin="0,8,0,6"/>
+                                                           Margin="0,6,0,6"/>
 
                                                 <!-- Comment -->
                                                 <TextBlock Grid.Row="2"
                                                            Text="{Binding Comment}"
                                                            TextWrapping="Wrap" FontSize="13"
-                                                           Foreground="{DynamicResource MaterialDesignBody}"
                                                            LineHeight="20"/>
 
+                                                <!-- Delete button (own reviews only) -->
                                                 <Button Grid.Column="1" Grid.RowSpan="3"
                                                         Content="Удалить"
                                                         VerticalAlignment="Center"

@@ -85,7 +85,7 @@
                                             Content="✕" Width="36" Height="36"
                                             Tag="{Binding ProductId}"
                                             Style="{StaticResource MaterialDesignFlatButton}"
-                                            Foreground="#B0BEC5"
+                                            Foreground="{DynamicResource MaterialDesignBodyLight}"
                                             VerticalAlignment="Center"
                                             ToolTip="Удалить из корзины"
                                             Click="RemoveItem_Click"/>
@@ -106,7 +106,7 @@
             <StackPanel Margin="24">
                 <TextBlock Text="Итого" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
 
-                <Border Height="1" Background="#ECEFF1" Margin="0,0,0,16"/>
+                <Border Height="1" Background="{DynamicResource MaterialDesignDivider}" Margin="0,0,0,16"/>
 
                 <Grid Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>

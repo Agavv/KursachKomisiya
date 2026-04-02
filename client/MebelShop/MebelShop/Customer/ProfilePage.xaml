@@ -54,12 +54,10 @@
                                                        Text="{Binding CreatedAt, StringFormat='{}{0:dd.MM.yyyy}'}"
                                                        Foreground="{DynamicResource MaterialDesignBodyLight}"
                                                        FontSize="13" VerticalAlignment="Center" Margin="12,0"/>
-                                            <Border Grid.Column="2" CornerRadius="12" Padding="10,4">
-                                                <Border.Background>
-                                                    <SolidColorBrush Color="#FFF8E1"/>
-                                                </Border.Background>
+                                            <Border Grid.Column="2" CornerRadius="12" Padding="10,4"
+                                                    Background="{DynamicResource SecondaryHueLightBrush}">
                                                 <TextBlock Text="{Binding Status}"
-                                                           Foreground="#E65100"
+                                                           Foreground="{DynamicResource SecondaryHueLightForegroundBrush}"
                                                            FontWeight="SemiBold" FontSize="12"/>
                                             </Border>
                                         </Grid>
@@ -74,7 +72,7 @@
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
                                                     <Border Width="56" Height="56" CornerRadius="8"
-                                                            ClipToBounds="True" Margin="0,0,8,0" Background="#F5F5F5">
+                                                            ClipToBounds="True" Margin="0,0,8,0" Background="{DynamicResource MaterialDesignCardBackground}">
                                                         <Image Source="{Binding}" Stretch="UniformToFill"
                                                                RenderOptions.BitmapScalingMode="HighQuality"/>
                                                     </Border>
@@ -116,7 +114,7 @@
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <Border CornerRadius="8" ClipToBounds="True" Background="#F5F5F5"
+                                        <Border CornerRadius="8" ClipToBounds="True" Background="{DynamicResource MaterialDesignCardBackground}"
                                                 Width="64" Height="64">
                                             <Image Source="{Binding MainImageUrl}" Stretch="UniformToFill"
                                                    RenderOptions.BitmapScalingMode="HighQuality"/>
@@ -163,7 +161,7 @@
                                             <ColumnDefinition Width="64"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Border CornerRadius="8" ClipToBounds="True" Background="#F5F5F5"
+                                        <Border CornerRadius="8" ClipToBounds="True" Background="{DynamicResource MaterialDesignCardBackground}"
                                                 Width="64" Height="64">
                                             <Image Source="{Binding ProductImageUrl}" Stretch="UniformToFill"
                                                    RenderOptions.BitmapScalingMode="HighQuality"/>
@@ -228,8 +226,7 @@
                                             Style="{StaticResource MaterialDesignRaisedButton}"
                                             materialDesign:ButtonAssist.CornerRadius="6"
                                             Click="SaveProfileButton_Click"/>
-                                    <Button
-                                            Height="38" Margin="10,0,0,0"
+                                    <Button Height="38" Margin="10,0,0,0"
                                             Style="{StaticResource MaterialDesignOutlinedButton}"
                                             materialDesign:ButtonAssist.CornerRadius="6"
                                             Click="Logout_ButtonClick">

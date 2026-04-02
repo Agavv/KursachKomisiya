@@ -1,13 +1,19 @@
 <Page x:Class="MebelShop.Admin.CategoriesPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-      mc:Ignorable="d"
       Background="{DynamicResource MaterialDesignPaper}"
       TextElement.Foreground="{DynamicResource MaterialDesignBody}"
       Title="Категории">
+
+    <!-- MC6007 FIX: ContextMenu defined in Page.Resources so Click handlers
+         resolve against this page's code-behind, not DataGridTextColumn. -->
+    <Page.Resources>
+        <ContextMenu x:Key="CategoryRowContextMenu">
+            <MenuItem Header="✏  Изменить категорию" Click="EditCategory_Click"/>
+            <MenuItem Header="🗑  Удалить категорию"  Click="DeleteCategory_Click"/>
+        </ContextMenu>
+    </Page.Resources>
 
     <materialDesign:DialogHost x:Name="CategoryDialogHost">
         <Grid Margin="20,16">
@@ -30,7 +36,7 @@
                     <DropShadowEffect Color="#000" Opacity="0.07" BlurRadius="8" ShadowDepth="2" Direction="270"/>
                 </Border.Effect>
                 <StackPanel Orientation="Horizontal" Margin="16,10">
-                    <TextBox x:Name="SearchTextBox" Width="280"
+                    <TextBox x:Name="SearchTextBox" Width="300"
                              Style="{StaticResource MaterialDesignOutlinedTextBox}"
                              materialDesign:HintAssist.Hint="🔍  Поиск по ID или названию"
                              TextChanged="SearchTextBox_TextChanged"
@@ -54,54 +60,49 @@
                           materialDesign:DataGridAssist.CellPadding="10,6"
                           materialDesign:DataGridAssist.ColumnHeaderPadding="10"
                           MouseDoubleClick="CategoriesDataGrid_MouseDoubleClick">
+
+                    <!-- ContextMenu from Page.Resources — fixes MC6007 -->
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                            <Setter Property="ContextMenu" Value="{StaticResource CategoryRowContextMenu}"/>
+                        </Style>
+                    </DataGrid.RowStyle>
+
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID"                  Binding="{Binding IdCategory}"           Width="60"/>
                         <DataGridTextColumn Header="Название категории"  Binding="{Binding NameCategory}"         Width="*"/>
                         <DataGridTextColumn Header="Характеристик"       Binding="{Binding CharacteristicsCount}" Width="130"/>
                         <DataGridTextColumn Header="Товаров"             Binding="{Binding ProductsCount}"        Width="100"/>
                     </DataGrid.Columns>
-                    <DataGrid.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="✏  Изменить категорию" Click="EditCategory_Click"/>
-                            <MenuItem Header="🗑  Удалить категорию"  Click="DeleteCategory_Click"/>
-                        </ContextMenu>
-                    </DataGrid.ContextMenu>
                 </DataGrid>
             </Border>
 
             <Button Grid.Row="3" Content="+ Добавить категорию"
-                    Height="40" Padding="20,0"
-                    HorizontalAlignment="Center" Margin="0,12,0,0"
+                    Height="40" Padding="20,0" HorizontalAlignment="Center" Margin="0,12,0,0"
                     Style="{StaticResource MaterialDesignRaisedButton}"
                     materialDesign:ButtonAssist.CornerRadius="8"
                     Click="AddCategory_Click"/>
         </Grid>
 
-        <!-- Add/Edit dialog -->
+        <!-- Add / Edit dialog -->
         <materialDesign:DialogHost.DialogContent>
-            <Border Padding="24" Width="360" CornerRadius="10"
-                    Background="{DynamicResource MaterialDesignPaper}">
-                <StackPanel>
-                    <TextBlock Text="{Binding DialogTitle}" FontSize="18" FontWeight="Bold" Margin="0,0,0,16"/>
-                    <TextBlock Text="Название" FontSize="12" FontWeight="Medium"
-                               Foreground="{DynamicResource MaterialDesignBodyLight}" Margin="0,0,0,4"/>
-                    <TextBox x:Name="CategoryNameTextBox"
-                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                             materialDesign:HintAssist.Hint="Введите название категории"
-                             Margin="0,0,0,20"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Content="Отмена"
-                                Style="{StaticResource MaterialDesignOutlinedButton}"
-                                materialDesign:ButtonAssist.CornerRadius="6"
-                                Margin="0,0,10,0"
-                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
-                        <Button Content="Сохранить"
-                                Style="{StaticResource MaterialDesignRaisedButton}"
-                                materialDesign:ButtonAssist.CornerRadius="6"
-                                Click="DialogSave_Click"/>
-                    </StackPanel>
+            <StackPanel Margin="24" Width="340">
+                <TextBlock Text="{Binding DialogTitle}"
+                           FontSize="18" FontWeight="Bold" Margin="0,0,0,16"/>
+                <TextBlock Text="Название" FontSize="12" FontWeight="Medium"
+                           Foreground="{DynamicResource MaterialDesignBodyLight}" Margin="0,0,0,4"/>
+                <TextBox x:Name="CategoryNameTextBox"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         materialDesign:HintAssist.Hint="Введите название категории"
+                         Margin="0,0,0,20"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Отмена" Margin="0,0,10,0"
+                            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+                    <Button Content="Сохранить"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            Click="DialogSave_Click"/>
                 </StackPanel>
-            </Border>
+            </StackPanel>
         </materialDesign:DialogHost.DialogContent>
     </materialDesign:DialogHost>
 </Page>

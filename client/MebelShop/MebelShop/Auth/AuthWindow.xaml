@@ -8,10 +8,8 @@
         WindowStartupLocation="CenterScreen"
         Background="{DynamicResource MaterialDesignPaper}"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        Title="MebelShop" MinWidth="1024" MinHeight="720"
-        WindowStyle="SingleBorderWindow">
+        Title="MebelShop" MinWidth="1024" MinHeight="720">
     <Grid>
-        <!-- Subtle background pattern using gradient -->
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                 <GradientStop Color="#ECEFF1" Offset="0"/>
@@ -19,18 +17,17 @@
             </LinearGradientBrush>
         </Grid.Background>
 
-        <!-- Theme toggle -->
+        <!-- FIX: MaterialDesignIconForegroundButton does not exist → use MaterialDesignFlatButton -->
         <Button Content="{DynamicResource ThemeIcon}"
                 Width="44" Height="44"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Margin="12"
-                Click="ToggleTheme_Click"
-                Style="{StaticResource MaterialDesignIconForegroundButton}"
+                Style="{StaticResource MaterialDesignFlatButton}"
                 Foreground="{DynamicResource MaterialDesignBodyLight}"
+                Click="ToggleTheme_Click"
                 ToolTip="Сменить тему"/>
 
-        <!-- Centered auth frame -->
         <Frame x:Name="MainFrame"
                NavigationUIVisibility="Hidden"
                VerticalAlignment="Center"

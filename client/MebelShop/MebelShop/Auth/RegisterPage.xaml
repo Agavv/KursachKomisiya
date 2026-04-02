@@ -120,7 +120,7 @@
                             Click="Step3Finish_Click"/>
                 </StackPanel>
 
-                <Border Height="1" Background="#EEEEEE" Margin="0,18,0,8"/>
+                <Border Height="1" Background="{DynamicResource MaterialDesignDivider}" Margin="0,18,0,8"/>
                 <Button Content="Уже есть аккаунт? Войти"
                         Style="{StaticResource MaterialDesignFlatButton}"
                         Foreground="{DynamicResource PrimaryHueMidBrush}"

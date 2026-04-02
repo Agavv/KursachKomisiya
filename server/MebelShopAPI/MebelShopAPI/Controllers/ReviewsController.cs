@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -60,20 +60,19 @@ namespace MebelShopAPI.Controllers
 
             try
             {
-                var userId = await GetUserId();
-                // Вызов хранимой процедуры
-                await _context.Database.ExecuteSqlRawAsync(
-                    "EXEC sp_AddOrUpdateShopReplyToReview @ReviewID = {0}, @ShopReply = {1}",
-                    reviewId, replyText
-                );
+                // FIX: replaced stored procedure sp_AddOrUpdateShopReplyToReview with direct EF update.
+                // The SP required a ShopReply column that was missing from the EF model — now mapped.
+                var review = await _context.Reviews.FindAsync(reviewId);
+                if (review == null)
+                    return NotFound(new { message = "Отзыв не найден." });
 
+                review.ShopReply = replyText;
+                await _context.SaveChangesAsync();
+
+                var userId = await GetUserId();
                 await AuditLogger.LogAsync(_context, userId, $"Добавлен/обновлён ответ магазина на отзыв ID {reviewId}");
 
                 return Ok(new { message = "Ответ успешно добавлен или обновлён." });
-            }
-            catch (SqlException ex)
-            {
-                return StatusCode(500, new { error = $"Ошибка при работе с базой данных: {ex.Message}" });
             }
             catch (Exception ex)
             {

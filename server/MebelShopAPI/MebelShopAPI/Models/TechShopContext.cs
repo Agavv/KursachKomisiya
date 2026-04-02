@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
@@ -255,6 +255,8 @@ public partial class MebelShopContext : DbContext
                 .HasColumnType("datetime");
             entity.Property(e => e.ProductId).HasColumnName("Product_ID");
             entity.Property(e => e.ReviewText).IsUnicode(false);
+            // FIX: ShopReply column added to model — enables manager replies and prevents INSERT failures
+            entity.Property(e => e.ShopReply).IsUnicode(false);
             entity.Property(e => e.UserId).HasColumnName("User_ID");
 
             entity.HasOne(d => d.Product).WithMany(p => p.Reviews)

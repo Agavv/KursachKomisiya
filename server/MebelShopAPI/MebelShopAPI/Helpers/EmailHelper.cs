@@ -1,8 +1,8 @@
-﻿using MimeKit;
+using MimeKit;
 using MailKit.Net.Smtp;
+using MailKit.Security;
 
-namespace 
-    API.Helpers
+namespace API.Helpers
 {
     public class EmailHelper
     {
@@ -26,13 +26,12 @@ namespace
 
             emailMessage.Body = bodyBuilder.ToMessageBody();
 
-            using (var client = new SmtpClient())
-            {
-                await client.ConnectAsync(smtpServer, smtpPort, false);
-                await client.AuthenticateAsync(emailFrom, password);
-                await client.SendAsync(emailMessage);
-                await client.DisconnectAsync(true);
-            }
+            using var client = new SmtpClient();
+            // FIX: mail.ru port 587 requires STARTTLS, not plain (false)
+            await client.ConnectAsync(smtpServer, smtpPort, SecureSocketOptions.StartTls);
+            await client.AuthenticateAsync(emailFrom, password);
+            await client.SendAsync(emailMessage);
+            await client.DisconnectAsync(true);
         }
     }
 }

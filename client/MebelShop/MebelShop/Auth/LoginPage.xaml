@@ -71,7 +71,7 @@
                         materialDesign:ButtonAssist.CornerRadius="8"
                         Click="LoginButton_Click"/>
 
-                <Border Height="1" Background="#EEEEEE" Margin="0,20,0,20"/>
+                <Border Height="1" Background="{DynamicResource MaterialDesignDivider}" Margin="0,20,0,20"/>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Content="Нет аккаунта? Зарегистрируйтесь"
@@ -80,7 +80,7 @@
                             FontSize="12"
                             Margin="0,0,8,0"
                             Click="Register_Click"/>
-                    <TextBlock Text="·" VerticalAlignment="Center" Foreground="Gray"/>
+                    <TextBlock Text="·" VerticalAlignment="Center" Foreground="{DynamicResource MaterialDesignBodyLight}"/>
                     <Button Content="Забыли пароль?"
                             Style="{StaticResource MaterialDesignFlatButton}"
                             Foreground="{DynamicResource MaterialDesignBodyLight}"

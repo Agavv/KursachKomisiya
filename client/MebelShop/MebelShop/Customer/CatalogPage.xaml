@@ -15,7 +15,7 @@
         <!-- Filter Sidebar -->
         <Border Grid.Column="0" Width="260" VerticalAlignment="Stretch"
                 Background="{DynamicResource MaterialDesignPaper}" BorderThickness="0,0,1,0"
-                BorderBrush="#ECEFF1">
+                BorderBrush="{DynamicResource MaterialDesignDivider}">
             <Border.Effect>
                 <DropShadowEffect Color="#000" Opacity="0.08" BlurRadius="8" ShadowDepth="2" Direction="180"/>
             </Border.Effect>
@@ -27,7 +27,7 @@
                     <TextBlock Text="Фильтры" FontSize="18" FontWeight="SemiBold"/>
                 </StackPanel>
 
-                <Border Height="1" Background="#ECEFF1" Margin="0,0,0,16"/>
+                <Border Height="1" Background="{DynamicResource MaterialDesignDivider}" Margin="0,0,0,16"/>
 
                 <TextBlock Text="Категория" FontSize="12" FontWeight="Medium"
                            Foreground="{DynamicResource MaterialDesignBodyLight}" Margin="0,0,0,6"/>
@@ -62,7 +62,7 @@
 
             <!-- Search & sort bar -->
             <Border Grid.Row="0" Background="{DynamicResource MaterialDesignPaper}"
-                    BorderThickness="0,0,0,1" BorderBrush="#ECEFF1" Padding="16,12">
+                    BorderThickness="0,0,0,1" BorderBrush="{DynamicResource MaterialDesignDivider}" Padding="16,12">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
